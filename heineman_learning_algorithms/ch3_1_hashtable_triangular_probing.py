@@ -126,11 +126,9 @@ class HashtableLinked:
 
 
 if __name__ == "__main__":
-    # ht_size = 524_288
-    # num_words = 160_564
-
-    ht_size = 64
-    num_words = 21
+    ht_size = 524_288
+    num_words = 160_564
+    num_experiments = 20
 
     timing1 = timeit.timeit(
         stmt="""
@@ -138,13 +136,13 @@ for word in words:
     ht.get(word)
         """,
         setup=f"""
-from ch3_1_hashtable import english_words, HashtableOpen
+from ch3_1_hashtable_triangular_probing import english_words, HashtableOpen
 words = english_words()
 words = words[:{num_words}]
 ht = HashtableOpen({ht_size})
 for word in words:
     ht.put(word, word)
-        """)
+        """, number=num_experiments)/num_experiments
 
     print("Timing for linear probing hashtable:", round(timing1, 2))
 
@@ -154,13 +152,13 @@ for word in words:
     ht.get(word)
             """,
         setup=f"""
-from ch3_1_hashtable import english_words, HashtableTriangleNumbers
+from ch3_1_hashtable_triangular_probing import english_words, HashtableTriangleNumbers
 words = english_words()
 words = words[:{num_words}]
 ht = HashtableTriangleNumbers({ht_size})
 for word in words:
     ht.put(word, word)
-            """)
+            """, number=num_experiments)/num_experiments
 
     print("Timing for triangular probing hashtable:", round(timing2, 2))
 
@@ -170,12 +168,12 @@ for word in words:
     ht.get(word)
             """,
         setup=f"""
-from ch3_1_hashtable import english_words, HashtableLinked
+from ch3_1_hashtable_triangular_probing import english_words, HashtableLinked
 words = english_words()
 words = words[:{num_words}]
 ht = HashtableLinked({ht_size})
 for word in words:
     ht.put(word, word)
-            """)
+            """, number=num_experiments)/num_experiments
 
     print("Timing for separate chaining hashtable:", round(timing3, 2))
