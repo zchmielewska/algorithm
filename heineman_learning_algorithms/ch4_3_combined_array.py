@@ -1,39 +1,13 @@
-# Code from the book
-
-class Node:
-    def __init__(self, val):
-        self.value = val
-        self.next = None
-
-
-class Queue:
-    def __init__(self):
-        self.first = None
-        self.last = None
-
-    def is_empty(self):
-        return self.first is None
-
-    def enqueue(self, val):
-        if self.first is None:
-            self.first = self.last = Node(val)
-        else:
-            self.last.next = Node(val)
-            self.last = self.last.next
-
-    def dequeue(self):
-        if self.is_empty():
-            raise RuntimeError("Queue is empty")
-
-        val = self.first.value
-        self.first = self.first.next
-        return val
+import random
 
 
 class Entry:
     def __init__(self, v, p):
         self.value = v
         self.priority = p
+
+    def __repr__(self):
+        return f"{self.value}"
 
 
 class PQ:
@@ -83,3 +57,48 @@ class PQ:
 
             self.swap(child, parent)
             parent = child
+
+    def peek(self):
+        return self.storage[1]
+
+    def is_empty(self):
+        return self.N == 0
+
+
+def merged_arrays(heap1, heap2):
+    result = [None] * (heap1.N + heap2.N)
+    idx = len(result) - 1
+    while idx >= 0:
+        if heap1.is_empty():
+            result[idx] = heap2.dequeue()
+        elif heap2.is_empty():
+            result[idx] = heap1.dequeue()
+        else:
+            if heap1.peek().priority > heap2.peek().priority:
+                result[idx] = heap1.dequeue()
+            else:
+                result[idx] = heap2.dequeue()
+        idx -= 1
+    return result
+
+
+if __name__ == "__main__":
+    m = 2**3
+    n = 2**4
+
+    heap1 = PQ(m)
+    heap2 = PQ(n)
+
+    for _ in range(m):
+        r1 = round(random.random(), 2)
+        heap1.enqueue(r1, r1)
+
+    for _ in range(n):
+        r2 = round(random.random(), 2)
+        heap2.enqueue(r2, r2)
+
+    print("heap1:", heap1.storage)
+    print("heap2:", heap2.storage)
+
+    result = merged_arrays(heap1, heap2)
+    print("result:", result)

@@ -1,39 +1,13 @@
-# Code from the book
-
-class Node:
-    def __init__(self, val):
-        self.value = val
-        self.next = None
-
-
-class Queue:
-    def __init__(self):
-        self.first = None
-        self.last = None
-
-    def is_empty(self):
-        return self.first is None
-
-    def enqueue(self, val):
-        if self.first is None:
-            self.first = self.last = Node(val)
-        else:
-            self.last.next = Node(val)
-            self.last = self.last.next
-
-    def dequeue(self):
-        if self.is_empty():
-            raise RuntimeError("Queue is empty")
-
-        val = self.first.value
-        self.first = self.first.next
-        return val
+import random
 
 
 class Entry:
     def __init__(self, v, p):
         self.value = v
         self.priority = p
+
+    def __repr__(self):
+        return f"{self.value}"
 
 
 class PQ:
@@ -83,3 +57,35 @@ class PQ:
 
             self.swap(child, parent)
             parent = child
+
+    def peek(self):
+        return self.storage[1]
+
+    def is_empty(self):
+        return self.N == 0
+
+
+def k_smallest(vals, k):
+    N = len(vals)
+    pq = PQ(N)
+
+    for v in vals:
+        if pq.N < k:
+            pq.enqueue(v, v)
+        else:
+            if v < pq.peek().priority:
+                pq.dequeue()
+                pq.enqueue(v, v)
+
+    result = []
+    while not pq.is_empty():
+        result.append(pq.dequeue())
+
+    return list(reversed(result))
+
+
+if __name__ == "__main__":
+    vals = random.sample(range(0, 10 * 10), 10)
+    result = k_smallest(vals, 5)
+    print("Values:", vals)
+    print("K-smallest:", result)
