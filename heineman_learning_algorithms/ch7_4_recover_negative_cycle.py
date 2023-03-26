@@ -36,7 +36,7 @@ def bellman_ford_returns_negative_cycle(G, src):
                     target = e[1]
                     v = e[0]
                     path = [target]
-                    weight = e[2][][WEIGHT]
+                    weight = e[2][WEIGHT]
                     while v != target:
                         path.append(v)
                         e = edge_to[v]
