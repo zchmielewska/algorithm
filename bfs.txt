@@ -1,0 +1,56 @@
+I want to get from START to END.
+
+There is the following directed graph:
+START --> A
+START --> B
+A --> C
+B --> D
+D --> C
+B --> E
+E --> C
+C --> END
+
+
+Steps for BFS:
+Initialize the Queue: Start by enqueuing the starting node, START.
+Track Visited Nodes: Maintain a list to keep track of visited nodes to avoid cycles or redundant work.
+Path Recording: Use a path tracker to keep the path from the start node so far because we might need it when backtracking or reconstructing the final path.
+Execution of BFS:
+Enqueue Starting Node:
+
+Queue: [(START, [START])]
+Visited: Set off initially
+Dequeue START and explore its neighbors:
+
+Current: START
+Neighbors to explore: A, B
+Update states:
+
+Queue: [(A, [START, A]), (B, [START, B])]
+Visited: {START}
+Dequeue A and explore its neighbors:
+
+Current: A
+Neighbors to explore: C (next node to reach from A)
+Update states:
+
+Queue: [(B, [START, B]), (C, [START, A, C])]
+Visited: {START, A}
+Dequeue B and explore its neighbors:
+
+Current: B
+Neighbors to explore: D, E
+Update states:
+
+Queue: [(C, [START, A, C]), (D, [START, B, D]), (E, [START, B, E])]
+Visited: {START, A, B}
+Dequeue C and explore its neighbors:
+
+Current: C
+Neighbors to explore: END (finds the END node!)
+Because we reached the END, you track to the path where we got to the END:
+
+Path: [START, A, C, END]
+This gives you a valid path from START to END through the graph:
+
+The path is: START → A → C → END
